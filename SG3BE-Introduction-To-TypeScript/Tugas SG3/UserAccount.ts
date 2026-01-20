@@ -17,8 +17,8 @@ class UserAccount implements User {
   }
 
   getProfile(): void {
-    console.log(`Username: ${this.username}`);
-    console.log(`Email: ${this.email}`);
+    console.log("Username:", this.username);
+    console.log("Email:", this.email);
   }
 }
 

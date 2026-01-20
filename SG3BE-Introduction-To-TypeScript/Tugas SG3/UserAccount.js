@@ -5,8 +5,8 @@ var UserAccount = /** @class */ (function () {
         this.email = email;
     }
     UserAccount.prototype.getProfile = function () {
-        console.log("Username: ".concat(this.username));
-        console.log("Email: ".concat(this.email));
+        console.log("Username:", this.username);
+        console.log("Email:", this.email);
     };
     return UserAccount;
 }());
