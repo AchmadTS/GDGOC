@@ -37,6 +37,7 @@ model Book {
   publisher   Publisher? @relation(fields: [publisherId], references: [id])
 
   authors Author[] @relation("BookAuthors")
+  loans   Loan[]
 }
 
 model Author {
@@ -52,4 +53,22 @@ model Profile {
   bio      String
   author   Author @relation(fields: [authorId], references: [id])
   authorId Int    @unique
+}
+
+// Tugas
+model Member {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
+  loans Loan[]
+}
+
+model Loan {
+  id         Int       @id @default(autoincrement())
+  loanDate   DateTime  @default(now())
+  returnDate DateTime?
+  memberId   Int
+  member     Member    @relation(fields: [memberId], references: [id])
+  bookId     Int
+  book       Book      @relation(fields: [bookId], references: [id])
 }
