@@ -11,8 +11,8 @@ async function main() {
     console.log("=== Membuktikan Relasi One-to-Many: Member → Loan ===\n");
     const member = await prisma.member.create({
         data: {
-            name: "Budi Santoso",
-            email: "budi@example.com",
+            name: "Achmad Tirto Sudiro",
+            email: "achmadtirtosudiro@example.com",
         },
     });
     console.log("✅ Member berhasil dibuat:", member);
