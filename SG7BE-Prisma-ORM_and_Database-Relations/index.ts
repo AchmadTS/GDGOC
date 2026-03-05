@@ -1,74 +1,135 @@
-import express, { Request, Response, Application } from 'express';
-import * as swaggerUI from 'swagger-ui-express';
-import YAML from 'yamljs';
+import "dotenv/config";
+import express from "express";
+import type { Request, Response, Application } from "express";
+import { PrismaClient } from "@prisma/client";
 
 const app: Application = express();
+const prisma = new PrismaClient();
 const PORT: number = 3000;
 
 app.use(express.json());
-interface Book {
-    id: number;
-    title: string;
-    author: string;
-}
 
-let books: Book[] = [];
+app.get("/", (_req: Request, res: Response) => {
+  res.send("<h1>API Ready - Prisma Connected</h1><p>Gunakan endpoint <b>/books</b> untuk akses data.</p>");
+});
 
-//load swagger
-const swaggerDocument = YAML.load('./swagger.yaml');
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
-// routes
-app.get('/books', (req: Request, res: Response) => {
+app.get("/books", async (_req: Request, res: Response) => {
+  try {
+    const books = await prisma.book.findMany({
+      include: {
+        category: true,
+        authors: true,
+        publisher: true
+      }
+    });
     res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
 });
 
-app.post('/books', (req: Request, res: Response) => {
-    const { title, author } = req.body;
+app.get("/books/search", async (req: Request, res: Response) => {
+  try {
+    const titleParam = req.query.title;
 
-    if (!title || !author) {
-        return res.status(400).json({ message: "Data tidak lengkap" });
+    if (typeof titleParam !== "string") {
+      return res.status(400).json({ message: "Query parameter 'title' harus string" });
     }
 
-    const newBook: Book = {
-        id: Date.now(),
+    const books = await prisma.book.findMany({
+      where: {
+        title: { contains: titleParam, mode: "insensitive" },
+      },
+      include: { category: true, authors: true }
+    });
+
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+});
+
+app.get("/books/:id", async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "ID harus angka" });
+
+    const book = await prisma.book.findUnique({
+      where: { id },
+      include: { authors: true, category: true, publisher: true }
+    });
+
+    if (!book) return res.status(404).json({ message: "Buku tidak ditemukan" });
+    res.status(200).json(book);
+  } catch (error) {
+    res.status(500).json({ message: "Terjadi kesalahan server" });
+  }
+});
+
+app.post("/books", async (req: Request, res: Response) => {
+  try {
+    const { title, year, categoryId, authorIds, publisherId } = req.body;
+
+    if (!title || !year || !categoryId) {
+      return res.status(400).json({ message: "Title, Year, dan CategoryId wajib diisi" });
+    }
+
+    const newBook = await prisma.book.create({
+      data: {
         title,
-        author
-    };
+        year,
+        category: { connect: { id: categoryId } },
+        ...(publisherId && { publisher: { connect: { id: publisherId } } }),
+        authors: {
+          connect: authorIds?.map((id: number) => ({ id })) || []
+        }
+      },
+      include: { authors: true, category: true }
+    });
 
-    books.push(newBook);
     res.status(201).json(newBook);
+  } catch (error) {
+    res.status(500).json({ message: "Gagal membuat buku. Pastikan ID Relasi valid." });
+  }
 });
 
-app.put('/books/:id', (req: Request, res: Response) => {
-    const id: number = parseInt(String(req.params.id));
-    const index = books.findIndex(b => b.id === id);
+app.put("/books/:id", async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    const { title, year, categoryId, authorIds } = req.body;
 
-    if (index !== -1) {
-        books[index] = { ...books[index], ...req.body, id };
-        res.status(200).json(books[index]);
-    } else {
-        res.status(404).json({ message: "Buku tidak ditemukan" });
-    }
+    const updatedBook = await prisma.book.update({
+      where: { id },
+      data: {
+        title,
+        year,
+        ...(categoryId && { category: { connect: { id: categoryId } } }),
+        ...(authorIds && {
+          authors: {
+            set: authorIds.map((id: number) => ({ id })) 
+          }
+        })
+      }
+    });
+
+    res.status(200).json(updatedBook);
+  } catch (error) {
+    res.status(404).json({ message: "Buku tidak ditemukan atau ID relasi salah" });
+  }
 });
 
-app.delete('/books/:id', (req: Request, res: Response) => {
-    const id: number = parseInt(String(req.params.id));
-    const initialLength = books.length;
-    books = books.filter(b => b.id !== id);
+app.delete("/books/:id", async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ message: "ID tidak valid" });
 
-    if (books.length < initialLength) {
-        res.status(200).json({ message: "Buku berhasil dihapus" });
-    } else {
-        res.status(404).json({ message: "Buku tidak ditemukan" });
-    }
-});
-
-app.get('/', (req: Request, res: Response) => {
-    res.send('<h1> Server API ready</h1>');
+    await prisma.book.delete({ where: { id } });
+    res.status(200).json({ message: "Buku berhasil dihapus" });
+  } catch (error) {
+    res.status(404).json({ message: "Buku tidak ditemukan" });
+  }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Swagger: http://localhost:${PORT}/api-docs`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
