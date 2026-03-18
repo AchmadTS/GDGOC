@@ -1,1 +1,0 @@
-SELECT c.name, c.city, o.course AS book_title, o.price, o.order_date FROM orders AS o JOIN customers AS c ON o.customer_id = c.id WHERE (o.order_date BETWEEN '2024-02-01' AND '2024-03-31') AND (o.course LIKE '%SQL%' OR o.course LIKE '%PostgreSQL%') ORDER BY o.order_date DESC;

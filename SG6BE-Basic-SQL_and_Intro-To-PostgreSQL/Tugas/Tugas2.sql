@@ -1,1 +1,0 @@
-SELECT c.city, SUM(o.price) AS total_spend FROM orders AS o JOIN customers AS c ON o.customer_id = c.id GROUP BY c.city HAVING SUM(o.price) > 3000000;
