@@ -1,0 +1,558 @@
+openapi: 3.0.0
+info:
+  title: Library API
+  version: 1.0.0
+  description: Library API Documentation
+
+servers:
+  - url: http://localhost:3000
+
+tags:
+  - name: Category
+  - name: Publisher
+  - name: Book
+  - name: Author
+  - name: Member
+  - name: Loan
+
+paths:
+  # ================= CATEGORY =================
+
+  /categories:
+    get:
+      tags: [Category]
+      summary: Get all categories
+      responses:
+        200:
+          description: List categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+    post:
+      tags: [Category]
+      summary: Create category
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategory"
+      responses:
+        201:
+          description: Category created
+
+  /categories/{id}:
+    get:
+      tags: [Category]
+      summary: Get category by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Category detail
+
+    put:
+      tags: [Category]
+      summary: Update category
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategory"
+      responses:
+        200:
+          description: Category updated
+
+    delete:
+      tags: [Category]
+      summary: Delete category
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Category deleted
+
+  # ================= PUBLISHER =================
+
+  /publishers:
+    get:
+      tags: [Publisher]
+      summary: Get all publishers
+      responses:
+        200:
+          description: List publishers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Publisher"
+
+    post:
+      tags: [Publisher]
+      summary: Create publisher
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePublisher"
+      responses:
+        201:
+          description: Publisher created
+
+  /publishers/{id}:
+    get:
+      tags: [Publisher]
+      summary: Get publisher by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Publisher detail
+
+    put:
+      tags: [Publisher]
+      summary: Update publisher
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePublisher"
+      responses:
+        200:
+          description: Publisher updated
+
+    delete:
+      tags: [Publisher]
+      summary: Delete publisher
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Publisher deleted
+
+  # ================= AUTHOR =================
+
+  /authors:
+    get:
+      tags: [Author]
+      summary: Get all authors
+      responses:
+        200:
+          description: List authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Author"
+
+    post:
+      tags: [Author]
+      summary: Create author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAuthor"
+      responses:
+        201:
+          description: Author created
+
+  /authors/{id}:
+    get:
+      tags: [Author]
+      summary: Get author by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Author detail
+
+    put:
+      tags: [Author]
+      summary: Update author
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAuthor"
+      responses:
+        200:
+          description: Author updated
+
+    delete:
+      tags: [Author]
+      summary: Delete author
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Author deleted
+
+  # ================= BOOK =================
+
+  /books:
+    get:
+      tags: [Book]
+      summary: Get all books
+      responses:
+        200:
+          description: List books
+
+    post:
+      tags: [Book]
+      summary: Create book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBook"
+      responses:
+        201:
+          description: Book created
+
+  /books/{id}:
+    get:
+      tags: [Book]
+      summary: Get book by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Book detail
+
+    put:
+      tags: [Book]
+      summary: Update book
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Book updated
+
+    delete:
+      tags: [Book]
+      summary: Delete book
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Book deleted
+
+  # ================= MEMBER =================
+
+  /members:
+    get:
+      tags: [Member]
+      summary: Get all members
+      responses:
+        200:
+          description: List members
+
+    post:
+      tags: [Member]
+      summary: Create member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMember"
+      responses:
+        201:
+          description: Member created
+
+  /members/{id}:
+    get:
+      tags: [Member]
+      summary: Get member by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Member detail
+
+    put:
+      tags: [Member]
+      summary: Update member
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Member updated
+
+    delete:
+      tags: [Member]
+      summary: Delete member
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Member deleted
+
+  # ================= LOAN =================
+
+  /loans:
+    get:
+      tags: [Loan]
+      summary: Get all loans
+      responses:
+        200:
+          description: List loans
+
+    post:
+      tags: [Loan]
+      summary: Borrow a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateLoan"
+      responses:
+        201:
+          description: Loan created
+
+  /loans/{id}:
+    get:
+      tags: [Loan]
+      summary: Get loan by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Loan detail
+
+    delete:
+      tags: [Loan]
+      summary: Delete loan
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Loan deleted
+
+  /loans/{id}/return:
+    patch:
+      tags: [Loan]
+      summary: Return borrowed book
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Book returned
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    CreateCategory:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+
+    Publisher:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    CreatePublisher:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+
+    CreateAuthor:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        year:
+          type: integer
+        categoryId:
+          type: integer
+        publisherId:
+          type: integer
+
+    CreateBook:
+      type: object
+      required: [title, year, categoryId]
+      properties:
+        title:
+          type: string
+        year:
+          type: integer
+        categoryId:
+          type: integer
+        publisherId:
+          type: integer
+
+    Member:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+
+    CreateMember:
+      type: object
+      required: [name, email]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+
+    Loan:
+      type: object
+      properties:
+        id:
+          type: integer
+        loanDate:
+          type: string
+          format: date-time
+        returnDate:
+          type: string
+          nullable: true
+        memberId:
+          type: integer
+        bookId:
+          type: integer
+
+    CreateLoan:
+      type: object
+      required: [memberId, bookId]
+      properties:
+        memberId:
+          type: integer
+        bookId:
+          type: integer
