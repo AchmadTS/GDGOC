@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  books Book[]
+}
+
+model Publisher {
+  id    Int    @id @default(autoincrement())
+  name  String
+  books Book[]
+}
+
+model Book {
+  id    Int    @id @default(autoincrement())
+  title String
+  year  Int
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  publisherId Int?
+  publisher   Publisher? @relation(fields: [publisherId], references: [id])
+
+  authors Author[] @relation("BooksAuthors")
+  loans   Loan[]
+}
+
+model Author {
+  id      Int      @id @default(autoincrement())
+  name    String
+  books   Book[]   @relation("BooksAuthors")
+  profile Profile?
+}
+
+model Profile {
+  id       Int    @id @default(autoincrement())
+  bio      String
+  author   Author @relation(fields: [authorId], references: [id])
+  authorId Int    @unique
+}
+
+model Member {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+  loans     Loan[]
+}
+
+model Loan {
+  id         Int       @id @default(autoincrement())
+  loanDate   DateTime  @default(now())
+  returnDate DateTime?
+  memberId   Int
+  member     Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  bookId     Int
+  book       Book      @relation(fields: [bookId], references: [id])
+
+  @@index([memberId])
+}
