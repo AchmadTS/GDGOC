@@ -5,7 +5,7 @@ import categoryRoutes from "./routes/category.route.js"
 import authorRoutes from "./routes/author.route.js"
 import bookRoutes from "./routes/book.route.js"
 // import loanRoutes from "./routes/loan.route"
-// import memberRoutes from "./routes/member.route"
+import memberRoutes from "./routes/member.route.js"
 
 import { swaggerDocs } from "./docs/swagger.js"
 import { errorHandler } from "./middlewares/error.middleware.js"
@@ -18,7 +18,7 @@ app.use("/categories", categoryRoutes)
 // app.use("/publishers", publisherRoutes)
 app.use("/authors", authorRoutes)
 app.use("/books", bookRoutes)
-// app.use("/members", memberRoutes)
+app.use("/members", memberRoutes)
 // app.use("/loans", loanRoutes)
 
 app.use(errorHandler)
