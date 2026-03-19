@@ -7,6 +7,10 @@ import bookRoutes from "./routes/book.route.js"
 import loanRoutes from "./routes/loan.route.js"
 import memberRoutes from "./routes/member.route.js"
 
+// TUGAS
+import profileRoutes from "./routes/profile.route.js"
+// END TUGAS
+
 import { swaggerDocs } from "./docs/swagger.js"
 import { errorHandler } from "./middlewares/error.middleware.js"
 
@@ -20,6 +24,10 @@ app.use("/authors", authorRoutes)
 app.use("/books", bookRoutes)
 app.use("/members", memberRoutes)
 app.use("/loans", loanRoutes)
+
+// TUGAS
+app.use("/profiles", profileRoutes)
+// END TUGAS
 
 app.use(errorHandler)
 
