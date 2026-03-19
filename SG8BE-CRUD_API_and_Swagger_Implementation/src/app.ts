@@ -1,7 +1,7 @@
 import express from "express"
 
 import categoryRoutes from "./routes/category.route.js"
-// import publisherRoutes from "./routes/publisher.route"
+import publisherRoutes from "./routes/publisher.route.js"
 import authorRoutes from "./routes/author.route.js"
 import bookRoutes from "./routes/book.route.js"
 import loanRoutes from "./routes/loan.route.js"
@@ -15,7 +15,7 @@ app.use(express.json())
 swaggerDocs(app)
 
 app.use("/categories", categoryRoutes)
-// app.use("/publishers", publisherRoutes)
+app.use("/publishers", publisherRoutes)
 app.use("/authors", authorRoutes)
 app.use("/books", bookRoutes)
 app.use("/members", memberRoutes)
