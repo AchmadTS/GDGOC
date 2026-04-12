@@ -1,4 +1,4 @@
-import express from "express"
+import express, { type Express } from "express"
 
 import categoryRoutes from "./routes/category.route.js"
 import publisherRoutes from "./routes/publisher.route.js"
@@ -14,7 +14,7 @@ import profileRoutes from "./routes/profile.route.js"
 import { swaggerDocs } from "./docs/swagger.js"
 import { errorHandler } from "./middlewares/error.middleware.js"
 
-const app = express()
+const app: Express = express()
 app.use(express.json())
 swaggerDocs(app)
 

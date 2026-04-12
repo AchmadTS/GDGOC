@@ -4,7 +4,7 @@ import * as controller from "../controllers/profile.controller.js"
 import { validate } from "../middlewares/validation.middleware.js"
 import { profileSchema } from "../schemas/profile.schema.js"
 
-const router = Router()
+const router: Router = Router()
 
 router.get("/", controller.findAll)
 router.get("/:id", controller.findOne)

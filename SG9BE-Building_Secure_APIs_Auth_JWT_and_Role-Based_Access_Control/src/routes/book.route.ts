@@ -3,7 +3,7 @@ import * as controller from "../controllers/book.controller.js"
 import { validate } from "../middlewares/validation.middleware.js"
 import { bookSchema } from "../schemas/book.schema.js"
 
-const router = Router()
+const router: Router = Router()
 
 router.get("/", controller.findAll)
 router.get("/:id", controller.findOne)

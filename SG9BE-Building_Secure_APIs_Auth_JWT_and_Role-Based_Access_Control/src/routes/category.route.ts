@@ -3,7 +3,7 @@ import * as controller from "../controllers/category.controller.js"
 import { validate } from "../middlewares/validation.middleware.js"
 import { categorySchema } from "../schemas/category.schema.js"
 
-const router = Router()
+const router: Router = Router()
 
 router.get("/", controller.findAll)
 

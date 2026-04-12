@@ -3,7 +3,7 @@ import * as controller from "../controllers/loan.controller.js"
 import { validate } from "../middlewares/validation.middleware.js"
 import { createLoanSchema, returnLoanSchema } from "../schemas/loan.schema.js"
 
-const router = Router()
+const router: Router = Router()
 
 router.get("/",controller.findAll)
 router.get("/:id",controller.findOne)

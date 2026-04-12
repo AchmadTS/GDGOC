@@ -3,7 +3,7 @@ import * as controller from "../controllers/member.controller.js"
 import { validate } from "../middlewares/validation.middleware.js"
 import { createMemberSchema, updateMemberSchema } from "../schemas/member.schema.js"
 
-const router = Router()
+const router: Router = Router()
 
 router.get("/",controller.findAll)
 router.get("/:id",controller.findOne)
